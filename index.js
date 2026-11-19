@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 import { PDBLoader } from 'three/addons/loaders/PDBLoader.js';
-import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
 import { METH_PDB } from './molecule.js';
 
-let camera, scene, renderer, labelRenderer, controls, root;
+let camera, scene, renderer, controls, root;
 
 const loader = new PDBLoader();
 const offset = new THREE.Vector3();
@@ -38,13 +37,6 @@ function init() {
 	renderer.setAnimationLoop( animate );
 	document.getElementById( 'container' ).appendChild( renderer.domElement );
 
-	labelRenderer = new CSS2DRenderer();
-	labelRenderer.setSize( window.innerWidth, window.innerHeight );
-	labelRenderer.domElement.style.position = 'absolute';
-	labelRenderer.domElement.style.top = '0px';
-	labelRenderer.domElement.style.pointerEvents = 'none';
-	document.getElementById( 'container' ).appendChild( labelRenderer.domElement );
-
 	controls = new TrackballControls( camera, renderer.domElement );
 	controls.minDistance = 500;
 	controls.maxDistance = 2000;
@@ -61,7 +53,7 @@ function loadMolecule() {
 
 	const geometryAtoms = pdb.geometryAtoms;
 	const geometryBonds = pdb.geometryBonds;
-	const json = pdb.json;
+	let json = pdb.json;
 
 	const boxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
 	const sphereGeometry = new THREE.IcosahedronGeometry( 1, 3 );
@@ -73,7 +65,7 @@ function loadMolecule() {
 	geometryBonds.translate( offset.x, offset.y, offset.z );
 
 	let positions = geometryAtoms.getAttribute( 'position' );
-	const json = pdb.json;
+	json = pdb.json;
 
 	const position = new THREE.Vector3();
 
@@ -85,10 +77,10 @@ function loadMolecule() {
 		const element = atom[ 4 ].trim();
 
 		let hexColor;
-		if ( element === 'C' ) hexColor = 0xbcbcbc;
+		if ( element === 'C' ) hexColor = 0x212121;
 		else if ( element === 'N' ) hexColor = 0x00bfff;
 		else if ( element === 'H' ) hexColor = 0xffffff;
-		else hexColor = 0x808080;
+		else hexColor = 0x8b8b8b;
 
 		const object = new THREE.Mesh( sphereGeometry, new THREE.MeshPhongMaterial( { color: hexColor } ) );
 		object.position.copy( position ).multiplyScalar( 75 );
@@ -107,7 +99,7 @@ function loadMolecule() {
 		start.fromBufferAttribute( positions, i ).multiplyScalar( 75 );
 		end.fromBufferAttribute( positions, i + 1 ).multiplyScalar( 75 );
 
-		const object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( { color: 0xffffff } ) );
+		const object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( { color: 0x8b8b8b } ) );
 		object.position.copy( start ).lerp( end, 0.5 );
 		object.scale.set( 5, 5, start.distanceTo( end ) );
 		object.lookAt( end );
@@ -123,7 +115,6 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	labelRenderer.setSize( window.innerWidth, window.innerHeight );
 
 }
 
@@ -136,6 +127,5 @@ function animate() {
 	root.rotation.y = time * 0.7;
 
 	renderer.render( scene, camera );
-	labelRenderer.render( scene, camera );
 
 }

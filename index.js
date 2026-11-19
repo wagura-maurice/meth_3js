@@ -73,17 +73,24 @@ function loadMolecule() {
 	geometryBonds.translate( offset.x, offset.y, offset.z );
 
 	let positions = geometryAtoms.getAttribute( 'position' );
-	const colors = geometryAtoms.getAttribute( 'color' );
+	const json = pdb.json;
 
 	const position = new THREE.Vector3();
-	const color = new THREE.Color();
 
 	for ( let i = 0; i < positions.count; i ++ ) {
 
 		position.fromBufferAttribute( positions, i );
-		color.fromBufferAttribute( colors, i );
 
-		const object = new THREE.Mesh( sphereGeometry, new THREE.MeshPhongMaterial( { color: color } ) );
+		const atom = json.atoms[ i ];
+		const element = atom[ 4 ].trim();
+
+		let hexColor;
+		if ( element === 'C' ) hexColor = 0xbcbcbc;
+		else if ( element === 'N' ) hexColor = 0x00bfff;
+		else if ( element === 'H' ) hexColor = 0xffffff;
+		else hexColor = 0x808080;
+
+		const object = new THREE.Mesh( sphereGeometry, new THREE.MeshPhongMaterial( { color: hexColor } ) );
 		object.position.copy( position ).multiplyScalar( 75 );
 		object.scale.multiplyScalar( 25 );
 		root.add( object );

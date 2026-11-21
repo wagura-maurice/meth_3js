@@ -78,8 +78,8 @@ function loadMolecule() {
 
 		let hexColor;
 		if ( element === 'C' ) hexColor = 0x212121;
-		else if ( element === 'N' ) hexColor = 0x00bfff;
-		else if ( element === 'H' ) hexColor = 0xffffff;
+		else if ( element === 'N' ) hexColor = 0xff69b4;
+		else if ( element === 'H' ) hexColor = 0x00bfff;
 		else hexColor = 0x8b8b8b;
 
 		const object = new THREE.Mesh( sphereGeometry, new THREE.MeshPhongMaterial( { color: hexColor } ) );

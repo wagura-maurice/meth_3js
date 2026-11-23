@@ -73,7 +73,6 @@ function loadMolecule() {
 	geometryBonds.translate( offset.x, offset.y, offset.z );
 
 	let positions = geometryAtoms.getAttribute( 'position' );
-	const json = pdb.json;
 
 	const position = new THREE.Vector3();
 

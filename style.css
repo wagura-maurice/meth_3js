@@ -15,11 +15,6 @@ body {
 	pointer-events: none;
 }
 
-#info a {
-	pointer-events: auto;
-	color: #fff;
-}
-
 .label {
 	text-shadow: -1px 1px 1px rgb(0,0,0);
 	margin-left: 25px;

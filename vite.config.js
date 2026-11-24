@@ -4,7 +4,10 @@ export default defineConfig({
   base: '/meth_3js/',
   build: {
     rollupOptions: {
-      input: 'index.html',
+      input: {
+        main: 'index.html',
+        numogram: 'numogram.html',
+      },
       output: {
         assetFileNames: 'assets/[name][extname]',
         chunkFileNames: 'assets/[name].js',
